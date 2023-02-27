@@ -38,3 +38,13 @@ export class CategoryController {
     return this.categoryService.remove(+id);
   }
 }
+
+@Controller('category')
+export class UserCategoryController {
+  constructor(private readonly categoryService: CategoryService) {}
+
+  @Get()
+  findAll() {
+    return this.categoryService.findAll();
+  }
+}

@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Post } from "../../post/entities/post.entity";
 
 @Entity()
 export class Category {
@@ -13,4 +14,7 @@ export class Category {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   public updatedAt: Date;
+
+  @OneToOne(type => Post, post => post.category, {nullable: true})
+  public post:Post;
 }
