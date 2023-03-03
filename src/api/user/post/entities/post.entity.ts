@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Category } from "../../category/entities/category.entity";
+import { User } from "../../user.entity";
 
 @Entity()
 export class Post {
@@ -11,6 +12,13 @@ export class Post {
 
   @Column({ type: 'text', nullable: true })
   public content: string | null;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'author_id' })
+  author: User;
+
+  @Column('json', { default: [] })
+  hashtags: Array<string>;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   public createdAt: Date;

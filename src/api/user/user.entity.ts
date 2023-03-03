@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserFollowing } from './user-followings.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -15,6 +16,12 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar', nullable: true })
   public name: string | null;
+
+  @Column({ name: 'follower_count', default: 0 })
+  followerCount: number;
+
+  @Column({ name: 'followee_count', default: 0 })
+  followeeCount: number;
 
   @Column({ type: 'timestamp', nullable: true, default: null })
   public lastLoginAt: Date | null;

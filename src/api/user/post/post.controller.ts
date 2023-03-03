@@ -5,7 +5,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { SearchPostDto } from './dto/search-post.dto';
 import { JwtAuthGuard } from '../auth/auth.guard';
 
-@Controller('admin/post')
+@Controller('user/post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
