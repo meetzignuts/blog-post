@@ -25,7 +25,7 @@ export class AuthHelper {
   }
 
   public generateToken(user: User): string {
-    return this.jwt.sign({ id: user.id, email: user.email});
+    return this.jwt.sign({ id: user.id, email: user.email, user_type: user.user_type});
   }
 
   public isPasswordValid(password: string, userPassword: string): boolean {
@@ -38,7 +38,23 @@ export class AuthHelper {
     return bcrypt.hashSync(password, salt);
   }
 
-  private async validate(token: string): Promise<boolean | never> {
+  private async validateAdminRole(token: string): Promise<boolean | never> {
+    const decoded: unknown = this.jwt.verify(token);
+
+    if (!decoded) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+
+    const user: User = await this.validateUser(decoded);
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return true;
+  }
+
+  private async validateUserRole(token: string): Promise<boolean | never> {
     const decoded: unknown = this.jwt.verify(token);
 
     if (!decoded) {

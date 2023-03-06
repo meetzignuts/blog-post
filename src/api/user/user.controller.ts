@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Param, Put, UseGuards } from "@nestjs/common";
 import { DUser } from "./auth/auth.decorator";
-import { JwtAuthGuard } from "./auth/auth.guard";
+import { JwtAuthUserGuard } from "./auth/auth.guard";
 import { User } from "./user.entity";
 import { UserService } from "./user.service";
 
@@ -8,7 +8,7 @@ import { UserService } from "./user.service";
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthUserGuard)
   @Put("/:userid/follow")
   async followUser(
     @DUser() follower: User,
@@ -21,7 +21,7 @@ export class UserController {
     return followedUser;
   }
   
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthUserGuard)
   @Delete("/:userid/follow")
   async unfollowUser(
     @DUser() follower: User,
@@ -34,12 +34,12 @@ export class UserController {
     return unfollowedUser;
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthUserGuard)
   @Get("/:userid/followers")
   async getFollowersOfUser(): Promise<User[]> {
     return [];
   }
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthUserGuard)
   @Put("/:userid/followees")
   async getFolloweesOfUser(): Promise<User[]> {
     return [];

@@ -17,12 +17,15 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   public name: string | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  public user_type: string | null;
+
   @Column({ name: 'follower_count', default: 0 })
   followerCount: number;
 
   @Column({ name: 'followee_count', default: 0 })
   followeeCount: number;
 
-  @Column({ type: 'timestamp', nullable: true, default: null })
+  @Column({precision: null, type: 'timestamp', nullable: true, default: null })
   public lastLoginAt: Date | null;
 }

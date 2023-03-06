@@ -11,6 +11,9 @@ export class RegisterDto {
   public readonly password: string;
 
   @IsString()
+  public readonly user_type: 'ADMIN' | 'USER';
+
+  @IsString()
   @IsOptional()
   public readonly name?: string;
 }

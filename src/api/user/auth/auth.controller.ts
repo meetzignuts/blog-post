@@ -1,7 +1,7 @@
 import { Body, Controller, Inject, Post, ClassSerializerInterceptor, UseInterceptors, UseGuards, Req, Delete, Param, Put, Get } from '@nestjs/common';
 import { User } from '../../../api/user/user.entity';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
-import { JwtAuthGuard } from './auth.guard';
+import { JwtAuthUserGuard, JwtAuthAdminGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { DUser } from './auth.decorator';
@@ -23,9 +23,15 @@ export class AuthController {
     return this.service.login(body);
   }
 
-  @Post('/refresh')
-  @UseGuards(JwtAuthGuard)
-  private refresh(@Req() { user }: Request): Promise<string | never> {
+  @Post('/admin/refresh')
+  @UseGuards(JwtAuthAdminGuard)
+  private refreshAdmin(@Req() { user }: Request): Promise<string | never> {
+    return this.service.refresh(<User>user);
+  }
+
+  @Post('/user/refresh')
+  @UseGuards(JwtAuthUserGuard)
+  private refreshUser(@Req() { user }: Request): Promise<string | never> {
     return this.service.refresh(<User>user);
   }
 }

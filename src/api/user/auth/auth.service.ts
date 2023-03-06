@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../../api/user/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
 import { AuthHelper } from './auth.helper';
+import { UserType } from 'src/common/data.constant';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
   private readonly helper: AuthHelper;
 
   public async register(body: RegisterDto): Promise<User | never> {
-    const { name, email, password }: RegisterDto = body;
+    const { name, email, password, user_type }: RegisterDto = body;
     let user: User = await this.repository.findOne({ where: { email } });
 
     if (user) {
@@ -26,6 +27,12 @@ export class AuthService {
     user.name = name;
     user.email = email;
     user.password = this.helper.encodePassword(password);
+
+    if(user_type == "ADMIN"){
+      user.user_type = UserType.admin;
+    }else{
+      user.user_type = UserType.user;
+    }
 
     return this.repository.save(user);
   }

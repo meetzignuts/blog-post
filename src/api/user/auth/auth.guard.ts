@@ -4,7 +4,23 @@ import { Request } from 'express';
 import { User } from '../../../api/user/user.entity';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') implements IAuthGuard {
+export class JwtAuthAdminGuard extends AuthGuard('jwt') implements IAuthGuard {
+  public handleRequest(err: unknown, user: User): any {
+    return user;
+  }
+
+  public async canActivate(context: ExecutionContext): Promise<boolean> {
+    await super.canActivate(context);
+
+    const { user }: Request = context.switchToHttp().getRequest();
+
+    console.log(user);
+
+    return user ? true : false;
+  }
+}
+@Injectable()
+export class JwtAuthUserGuard extends AuthGuard('jwt') implements IAuthGuard {
   public handleRequest(err: unknown, user: User): any {
     return user;
   }
